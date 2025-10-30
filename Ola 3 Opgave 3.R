@@ -11,7 +11,7 @@ tempf.tillid <- as.data.frame(c((kvartalerft1.1+kvartalerft2.1+kvartalerft3.1)/3
 
 f.tillidsammenk3 <- as.data.frame(c(f.tillidsammen$pfv, pfvforudsigelsek3))
 f.tillidsammenk3$YN <- as.factor(ifelse(f.tillidsammenk3[,1] >=0, "1", "0"))
-f.tillidsammenk3$FTI <- tempf.tillid
+f.tillidsammenk3$FT <- tempf.tillid
 f.tillidsammenk3$YNFTI <- as.factor(ifelse(f.tillidsammenk3[,3] >=0, "1", "0"))
 
 f.tillidsammenk3$fittedvalues <- fitted.values(lm.opt)
@@ -27,3 +27,19 @@ predictionglm <- estimateglm+stdglm*f.tillid[310,2]
 
 p <- exp(predictionglm)/(1+exp(predictionglm))
 #vores validering er megeeet god
+
+####fik chatten til at komme med et eksempel og jeg anvendte det så på vores data
+dataframeglm <- data.frame(y= f.tillidsammenk3[2], x1=tempf.tillid[1])
+dataframeglm[2] <- tempf.tillid[1]
+dataframeglm[3] <- as.factor(ifelse(dataframeglm[2] >=0, "1", "0"))
+modelt <- glm(YN ~ FTI, data = dataframeglm, family = binomial)
+summary(modelt)
+
+new_datat <- data.frame(FTI = c(f.tillid[310,2]))
+pred_probst <- predict(modelt, newdata = new_datat, type = "response")
+pred_probst
+pred_classest <- ifelse(pred_probst > 0.5, 1, 0)
+pred_classest
+new_datat$pred_probt  <- pred_probst
+new_datat$pred_classt <- pred_classest
+print(new_datat)
