@@ -43,3 +43,4 @@ pred_classest
 new_datat$pred_probt  <- pred_probst
 new_datat$pred_classt <- pred_classest
 print(new_datat)
+

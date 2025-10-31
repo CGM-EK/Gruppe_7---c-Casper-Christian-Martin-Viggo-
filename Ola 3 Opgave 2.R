@@ -14,7 +14,7 @@ pcr.fit <- pcr(f.tillidsammen$pfv ~ forbrugertillid$Spg1+
                  forbrugertillid$Spg10+
                  forbrugertillid$Spg11+
                  forbrugertillid$Spg12,
-                 validation = "CV", scale = T)
+               validation = "CV", scale = T)
 summary(pcr.fit)
 
 loadings.pcr.fit <- pcr.fit$loadings
@@ -26,7 +26,7 @@ sum(w.indicators1)
 
 w.indicators1$spg <- c("Spg1", "Spg2", "Spg3", "Spg4", "Spg5", "Spg6", "Spg7", "Spg8", "Spg9", "Spg10", "Spg11", "Spg12")
 w.indicators1$spg <- factor(w.indicators1$spg,
-                       levels = paste0("Spg", 1:12))
+                            levels = paste0("Spg", 1:12))
 
 ggplot(data = w.indicators1, aes(x = spg[1:12], y = w.indicators1[,1]))+
   geom_bar(fill = "darkolivegreen4", stat = "identity")+
@@ -35,14 +35,14 @@ ggplot(data = w.indicators1, aes(x = spg[1:12], y = w.indicators1[,1]))+
 
 # pcr.fit på spg for den optimale indikator fra opg. 1
 pcr.fit.opt <- pcr(f.tillidsammen$pfv ~
-                 forbrugertillid$Spg3+
-                 forbrugertillid$Spg6+
-                 forbrugertillid$Spg8+
-                 forbrugertillid$Spg9+
-                 forbrugertillid$Spg10+
-                 forbrugertillid$Spg11+
-                 forbrugertillid$Spg12,
-               validation = "CV", scale = T)
+                     forbrugertillid$Spg3+
+                     forbrugertillid$Spg6+
+                     forbrugertillid$Spg8+
+                     forbrugertillid$Spg9+
+                     forbrugertillid$Spg10+
+                     forbrugertillid$Spg11+
+                     forbrugertillid$Spg12,
+                   validation = "CV", scale = T)
 summary(pcr.fit.opt)
 
 loadings.pcr.fit.opt <- pcr.fit.opt$loadings
@@ -54,7 +54,7 @@ sum(w.indicators1opt)
 
 w.indicators1opt$spg <- c("Spg3", "Spg6", "Spg8", "Spg9", "Spg1", "Spg11", "Spg12")
 w.indicators1opt$spg <- factor(w.indicators1opt$spg,
-                            levels = paste0("Spg", 1:12))
+                               levels = paste0("Spg", 1:12))
 
 ggplot(data = w.indicators1opt, aes(x = spg[1:7], y = w.indicators1opt[,1]))+
   geom_bar(fill = "darkolivegreen4", stat = "identity")+
@@ -63,12 +63,12 @@ ggplot(data = w.indicators1opt, aes(x = spg[1:7], y = w.indicators1opt[,1]))+
 
 #pfv
 optimalvektor <- as.data.frame(forbrugertillid$Spg3*as.numeric(w.indicators1[3,1])+
-                    forbrugertillid$Spg6*as.numeric(w.indicators1[6,1])+
-                    forbrugertillid$Spg8*as.numeric(w.indicators1[8,1])+
-                    forbrugertillid$Spg9*as.numeric(w.indicators1[9,1])+
-                    forbrugertillid$Spg10*as.numeric(w.indicators1[10,1])+
-                    forbrugertillid$Spg11*as.numeric(w.indicators1[11,1])+
-                    forbrugertillid$Spg12*as.numeric(w.indicators1[12,1]))
+                                 forbrugertillid$Spg6*as.numeric(w.indicators1[6,1])+
+                                 forbrugertillid$Spg8*as.numeric(w.indicators1[8,1])+
+                                 forbrugertillid$Spg9*as.numeric(w.indicators1[9,1])+
+                                 forbrugertillid$Spg10*as.numeric(w.indicators1[10,1])+
+                                 forbrugertillid$Spg11*as.numeric(w.indicators1[11,1])+
+                                 forbrugertillid$Spg12*as.numeric(w.indicators1[12,1]))
 
 lm.opt.vægt <- lm(f.tillidsammen$pfv ~ optimalvektor[,1])
 summary(lm.opt.vægt)
