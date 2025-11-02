@@ -60,3 +60,60 @@ ggplot(data = totaldf, aes(x = tid, y = value, color = winddir)) +
     y = "Vind (m/s)"
   )
 
+######################## NOVEMBER 2022 ################################################################
+
+start_date <- as.POSIXct("2022-11-14 03:00:00")
+end_date <- as.POSIXct("2022-11-21 00:00:00")
+
+# Create sequence every 12 hours
+date_vec <- seq(from = start_date, to = end_date, by = "3 hours")
+date_vec <- as.POSIXct(date_vec, format = "%d-%m-%Y %H:%M")
+
+j <- seq(28,1000, 18)
+j <- c(10,j)
+
+#06079
+urlanholt <- "https://dmigw.govcloud.dk/v2/metObs/collections/observation/items?parameterId=wind_dir&datetime=2022-11-14T00:00:00Z/2022-11-21T00:00:00Z&stationId=06079&api-key=d5a4ceb4-12b0-4c59-8454-f5480b852a08"
+
+res <- httr::GET(urlanholt)
+rescontent <- content(res, as="text")
+resretval <- jsonlite::fromJSON(rescontent)
+anholt <- as.data.frame(resretval[["features"]][["properties"]])
+anholt_flip <- anholt[nrow(anholt):1,]
+rownames(anholt_flip) <- rownames(anholt)
+View(anholt_flip)
+
+anholt3hours <- data.frame(ParameterID=anholt_flip[1:56,1], time=date_vec, value=anholt_flip$value[j], stationID=anholt_flip[1:56,5])
+
+
+#06074
+urlaarhus <- "https://dmigw.govcloud.dk/v2/metObs/collections/observation/items?parameterId=wind_dir&datetime=2022-11-14T00:00:00Z/2022-11-21T00:00:00Z&stationId=06074&api-key=d5a4ceb4-12b0-4c59-8454-f5480b852a08"
+
+res <- httr::GET(urlaarhus)
+rescontent <- content(res, as="text")
+resretval <- jsonlite::fromJSON(rescontent)
+aarhus <- as.data.frame(resretval[["features"]][["properties"]])
+
+aarhus_flip <- aarhus[nrow(aarhus):1,]
+rownames(aarhus_flip) <- rownames(aarhus)
+View(aarhus_flip)
+
+aarhus3hours <- data.frame(ParameterID=aarhus_flip[1:56,1], time=date_vec, value=aarhus_flip$value[j], stationID=aarhus_flip[1:56,5])
+
+
+
+bynavn <- c(rep("Århus", times = 56),rep("Anholt", times = 56))
+
+anaar <- rbind(aarhus3hours, anholt3hours)
+anaar$stationID <- bynavn
+
+ggplot(data=anaar, aes(x=time, y=value, colour=stationID))+
+  geom_line(size=1)+
+  theme_minimal()+
+  labs(
+    title = "Under stormen i november 2022, kom vinden først fra en østlig retning inden den blev mere nordlig",
+    x = "Dato - 2022",
+    y = "Vindretning i grader"
+  )
+
+
