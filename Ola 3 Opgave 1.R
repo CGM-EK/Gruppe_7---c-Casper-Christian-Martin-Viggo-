@@ -134,7 +134,7 @@ k2 <- totalcordf$'Spg3 + Spg8 + Spg6 + Spg9 + Spg10 + Spg11 + Spg12'[102]
 #forudsigelse for k3
 pfvforudsigelsek3 <- estimate+std*k2
 
-spytterpåsitbarn <- (f.tillid$Spg3[310]+
+spgsss <- (f.tillid$Spg3[310]+
                        f.tillid$Spg6[310]+
                        f.tillid$Spg8[310]+
                        f.tillid$Spg9[310]+
@@ -143,7 +143,7 @@ spytterpåsitbarn <- (f.tillid$Spg3[310]+
                        f.tillid$Spg12[310])/7
 
 #forudsigelse for k4
-pfvforudsigelsek4 <- estimate+std*spytterpåsitbarn
+pfvforudsigelsek4 <- estimate+std*spgsss
 
 # Opgave 1.5
 #Definerer Mikrospg.
@@ -199,3 +199,4 @@ colnames(Mikrorsquaredcordf) <- c("R2", "COR")
 #Opretter dataframe til top 5 bedste combinationer
 Top5Mikrocombinationer <- Mikrorsquaredcordf[order(-Mikrorsquaredcordf[,2]), ]
 Top5Mikrocombinationer <- as.data.frame(Top5Mikrocombinationer[1:5,1:2])
+
